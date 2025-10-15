@@ -1,0 +1,3 @@
+date,side,qty,price,notional,fee,reason,target_w,fraction,realized,realized_ytd_after,tax_reserve_after
+2020-01-02,BUY,1446.1481957579654,21.782,31500.0,78.75,initial_allocation,0.5,1.0,,,
+2020-01-02,SELL,1446.1481957579654,21.782,31500.0,78.75,scheduled_regular,0.0,1.0,-157.49999999999602,-157.49999999999602,0.0
