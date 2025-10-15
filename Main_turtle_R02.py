@@ -4,8 +4,8 @@
 
 
 # PATH FOR MY MODULE
-import sys
-sys.path.append('/Users/ku/Library/CloudStorage/OneDrive-개인/QUANT/gu/')
+#import sys
+#sys.path.append('/Users/ku/Library/CloudStorage/OneDrive-개인/QUANT/gu/')
 
 
 # MODULES
