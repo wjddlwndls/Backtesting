@@ -39,8 +39,8 @@ pd.set_option('display.max_rows', None)
 # EOD = '2025-09-04'
 
 # For real trading
-BOD = '2025-01-03'
-EOD = '2025-10-10'
+BOD = '2025-01-02'
+EOD = '2025-10-15'
 
 # INIT. STOCK
 s1 = turtle.stock(code='NAS', tick='TQQQ')
