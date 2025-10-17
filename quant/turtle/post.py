@@ -377,14 +377,28 @@ class postprocessing:
 
         ### Williams Accumulation/Distribution (WAD) panel
         wad_plots = []
+        wad_panel = None
         if 'WAD' in ohlcv.columns:
+            def _panel_index(addplot):
+                panel_idx = None
+                if isinstance(addplot, dict):
+                    panel_idx = addplot.get('panel', None)
+                else:
+                    panel_idx = getattr(addplot, 'panel', None)
+                return 0 if panel_idx is None else panel_idx
+
+            existing_panels = {0}
+            for addplot in apdict:
+                existing_panels.add(_panel_index(addplot))
+
+            wad_panel = max(existing_panels) + 1
+
             wad_plots.append(
                 mpf.make_addplot(
                     ohlcv['WAD'].iloc[inds:inde+1],
-                    panel=1,
+                    panel=wad_panel,
                     color='tab:purple',
                     width=1,
-                    ylabel='WAD',
                     secondary_y=False,
                 )
             )
@@ -393,7 +407,7 @@ class postprocessing:
                 wad_plots.append(
                     mpf.make_addplot(
                         ohlcv['WAD_EMA'].iloc[inds:inde+1],
-                        panel=1,
+                        panel=wad_panel,
                         color='tab:orange',
                         width=1,
                         secondary_y=False,
@@ -402,7 +416,13 @@ class postprocessing:
 
         apdict.extend(wad_plots)
 
-        panel_ratios = (3, 1) if wad_plots else None
+        panel_ratios = None
+        if wad_plots:
+            panel_count = max(_panel_index(plot) for plot in apdict) + 1
+            ratios = [1] * panel_count
+            ratios[0] = 3
+            ratios[wad_panel] = 1
+            panel_ratios = tuple(ratios)
 
 
         ### plot
