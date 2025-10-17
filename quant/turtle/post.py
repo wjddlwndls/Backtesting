@@ -371,8 +371,38 @@ class postprocessing:
                 adpl[i]['data'] = adpl[i]['data'].iloc[inds0:inde0+1]
                 # Data slicing for plot
                 adpl[i]['data'] = adpl[i]['data'].iloc[inds:inde+1]
-                
+
                 apdict.append(adpl[i])
+
+
+        ### Williams Accumulation/Distribution (WAD) panel
+        wad_plots = []
+        if 'WAD' in ohlcv.columns:
+            wad_plots.append(
+                mpf.make_addplot(
+                    ohlcv['WAD'].iloc[inds:inde+1],
+                    panel=1,
+                    color='tab:purple',
+                    width=1,
+                    ylabel='WAD',
+                    secondary_y=False,
+                )
+            )
+
+            if 'WAD_EMA' in ohlcv.columns:
+                wad_plots.append(
+                    mpf.make_addplot(
+                        ohlcv['WAD_EMA'].iloc[inds:inde+1],
+                        panel=1,
+                        color='tab:orange',
+                        width=1,
+                        secondary_y=False,
+                    )
+                )
+
+        apdict.extend(wad_plots)
+
+        panel_ratios = (3, 1) if wad_plots else None
 
 
         ### plot
@@ -392,14 +422,14 @@ class postprocessing:
             style = s,
             # mav = (20,55),
             # volume = True,
-            show_nontrading = False, 
+            show_nontrading = False,
             addplot = apdict,
             title = 'PRICE HISTORY',
             ylabel = '$',
             # yscale = 'log',
             # vlines = dict(vlines=['2023-07-17','2023-07-18'], linewidths=(0.01,0.01)),
             # vlines = dict(vlines=bb, linewidths = 1, alpha=0.6),
-            fill_between = 
+            fill_between =
                 dict(y1 = 1.1*ohlcv['High'].iloc[inds:inde+1].max(),
                       y2 = 0,
                       where=xdf[inds:inde+1],
@@ -418,6 +448,7 @@ class postprocessing:
             update_width_config=dict(
                 candle_linewidth=0.5, candle_width=0.5, volume_linewidth=0.0),
             return_width_config=wconfig,
+            panel_ratios=panel_ratios,
             )
         # print(wconfig)
         plt.savefig('test.png', dpi=300, bbox_inches='tight')

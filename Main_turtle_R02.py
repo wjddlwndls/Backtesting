@@ -67,13 +67,13 @@ st.set_stock_tag('TQ')
 
 
 # Buy
-st.buy_lim(tag='buy#1', sgnl='pric > High20', cond=['fac == 1','ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
-st.buy_lim(tag='buy#2', sgnl='pric > High20', cond=['fac == 2','ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
-st.buy_lim(tag='buy#3', sgnl='pric > High20', cond=['fac == 6','ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
+st.buy_lim(tag='buy#1', sgnl='pric > High20', cond=['fac == 1', 'WAD > WAD_EMA', 'ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
+st.buy_lim(tag='buy#2', sgnl='pric > High20', cond=['fac == 2', 'WAD > WAD_EMA', 'ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
+st.buy_lim(tag='buy#3', sgnl='pric > High20', cond=['fac == 6', 'WAD > WAD_EMA', 'ecnt[TQ,buy]==0'], amnt='0.25', lamt=1, repc=1)
 st.gen_set(tag='buy', tlst=['buy#1','buy#2','buy#3'], ceky=-1, ropt=0)
-st.buy_lim(tag='add#1', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0','fac == 1'], amnt='0.25', repc=0, repd=1)
-st.buy_lim(tag='add#2', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0','fac == 2'], amnt='0.25', repc=0, repd=1)
-st.buy_lim(tag='add#3', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0','fac == 6'], amnt='0.25', repc=0, repd=1)
+st.buy_lim(tag='add#1', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0', 'fac == 1', 'WAD > WAD_EMA'], amnt='0.25', repc=0, repd=1)
+st.buy_lim(tag='add#2', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0', 'fac == 2', 'WAD > WAD_EMA'], amnt='0.25', repc=0, repd=1)
+st.buy_lim(tag='add#3', sgnl='pric > Pavg + 0.5*ATR', cond=['dcnt[TQ,buy]==0', 'fac == 6', 'WAD > WAD_EMA'], amnt='0.25', repc=0, repd=1)
 st.gen_set(tag='add', tlst=['add#1','add#2','add#3'], ceky=-1, ropt=0)
 st.gen_set(tag='BUY', tlst=['buy', 'add'], ceky=1, ropt=0)      # 매수전략 셋팅
 
@@ -99,8 +99,8 @@ st.gen_set(tag='tstg', tlst=['SEL','BUY'], ceky=-1)  # 전체전략 셋팅(매�
 st.set_stock_tag('SQ')
 
 # buy
-st.buy_lim(tag='buy#1', sgnl='pric > High20', amnt='0.2', lamt=1, repc=1)
-st.buy_lim(tag='add#1', sgnl='pric > Pavg + 0.5*ATR', pric='pric', amnt='0.2', repc=0, repd=1)
+st.buy_lim(tag='buy#1', sgnl='pric > High20', cond=['WAD < WAD_EMA'], amnt='0.2', lamt=1, repc=1)
+st.buy_lim(tag='add#1', sgnl='pric > Pavg + 0.5*ATR', pric='pric', cond=['WAD < WAD_EMA'], amnt='0.2', repc=0, repd=1)
 st.gen_set(tag='BUY', tlst=['buy#1', 'add#1'], ceky=1, ropt=0)      # 매수전략 셋팅
 
 # sel
