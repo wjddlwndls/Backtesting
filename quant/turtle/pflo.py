@@ -147,6 +147,25 @@ class stock:
         tmp = 1 * ind_up
         tmp[ind_dn] = -1
         self.df['trend'] = tmp
+
+        # Williams Accumulation/Distribution (WAD) line
+        prev_close = self.df['Close'].shift(1)
+        close = self.df['Close']
+        high = self.df['High']
+        low = self.df['Low']
+
+        min_low_prev = pd.concat([low, prev_close], axis=1).min(axis=1)
+        max_high_prev = pd.concat([high, prev_close], axis=1).max(axis=1)
+
+        wad_step = pd.Series(0.0, index=self.df.index)
+        cond_up = close > prev_close
+        cond_down = close < prev_close
+
+        wad_step[cond_up] = close[cond_up] - min_low_prev[cond_up]
+        wad_step[cond_down] = close[cond_down] - max_high_prev[cond_down]
+
+        self.df['WAD'] = wad_step.cumsum().fillna(0.0)
+        self.df['WAD_EMA'] = self.df['WAD'].ewm(span=10).mean()
     
     def _get_ohlcv(self):
         '''
